@@ -1,4 +1,5 @@
 ﻿using Dsw2026Ej11.Domain;
+using System.Collections;
 
 namespace Dsw2026Ej11.Collections;
 
@@ -18,7 +19,7 @@ namespace Dsw2026Ej11.Collections;
  */
 public class CasoLinq
 {
-    private List<Libro> _libros = Libro.CrearLista();
+    private readonly List<Libro> _libros = Libro.CrearLista();
 
     public Libro GetPrimero() => _libros.First();
 
@@ -28,15 +29,18 @@ public class CasoLinq
 
     public decimal GetPromedioPrecios() => _libros.Average(l=>l.Precio);
 
-    public List<Libro> GetListById() => _libros.Where(l=>l.Id>15).ToList();
+    public IEnumerable<Libro> GetListById() => _libros.Where(l=>l.Id>15);
     
-    public List<String> GetLibros() => _libros.Select(l => $"{l.Titulo} - {l.Precio:C}").ToList();
+    public IEnumerable<String> GetLibros() => _libros.Select(l => $"{l.Titulo} - {l.Precio:C}");
 
     public Libro? GetMayorPrecio() => _libros.MaxBy(l=>l.Precio);
     
     public Libro? GetMenorPrecio() => _libros.MinBy(l => l.Precio);
 
-    public List<Libro> GetMayorPromedio() => _libros.Where(l => l.Precio > GetPromedioPrecios()).ToList();
+    public IEnumerable<Libro> GetMayorPromedio() => _libros.Where(l => l.Precio > GetPromedioPrecios());
 
-    public List<Libro> GetLibrosDescendentes() => _libros.OrderByDescending(l => l.Titulo).ToList();
+    public IEnumerable<Libro> GetLibrosDescendentes() => _libros.OrderByDescending(l => l.Titulo);
+
+    // IEnumerable, Vicente dijo de fijarnos si usar eso en vez de crear listas
+    // IEnumerable != IEnumerator
 }
